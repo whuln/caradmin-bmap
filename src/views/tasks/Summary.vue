@@ -3,16 +3,12 @@
     <task-header>
       <span style="font-size:16px;">汇总统计</span>
     </task-header>
-    <div style="vertical-align: bottom;">
-      <!-- <mu-date-input style="width:150px;" v-model="year" prefix="选择年份:" suffix="年" type="year"></mu-date-input>&nbsp;&nbsp;&nbsp;&nbsp;
-      <mu-select style="width:150px;" prefix="选择月份:" suffix="月" v-model="month" fill>
-        <mu-option v-for="option,index in months" :key="option" :label="option" :value="option"></mu-option>
-      </mu-select>-->
-      <mu-date-input style="width:35%;"  v-model="startDate" label="起始时间" label-float></mu-date-input>
+    <div style="text-align:left">     
+      <my-date-input :width='100' label="起始时间" v-model="startDate"></my-date-input>
      ~
-      <mu-date-input style="width:35%;" v-model="stopDate" label="终止时间" label-float></mu-date-input>
+      <my-date-input :width='100'  v-model="stopDate" label="终止时间"></my-date-input>
       <mu-button @click="doTongji" color="red" small>统计</mu-button>
-    </div>
+    </div>    
     <div ref="summaryContentDiv" style="overflow:auto;">
       <fieldset v-for="item in summary">
         <legend>{{item.type}}</legend>
@@ -32,20 +28,23 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import TaskHeader from "./TaskHeader";
+import MyDateInput from "@/components/MyDateInput";
 export default {
   name: "Summary",
   components: {
-    TaskHeader
+    TaskHeader,
+    MyDateInput
   },
   computed: {
     ...mapState(["userinfo", "r"])
   },
   data() {
     return {
+      date:undefined,
       startDate: undefined,
       stopDate: undefined,
       columns: [
-        { title: "统计项", width: 80, name: "subject" },
+        { title: "统计项", width: 105, name: "subject" },
         {
           title: "距离(km)",
           name: "distance",
@@ -54,9 +53,9 @@ export default {
           sortable: true
         },
         {
-          title: "出车次数",
+          title: "次数",
           name: "times",
-          width: 70,
+          width: 50,
           align: "center",
           sortable: true
         },
@@ -72,12 +71,15 @@ export default {
     };
   },
   methods: {
-    async doTongji() {      
-      resp = await this.r.post("getsummary", {
+    async doTongji() {
+      // console.log(this.startDate);
+      // console.log(this.stopDate);
+            
+      const resp = await this.r.post("getsummary", {
         d_min: this.startDate.toLocaleDateString(),
         d_max: this.stopDate.toLocaleDateString()
       });
-      console.log(resp.data);
+      // console.log(resp.data);
       this.summary = resp.data;
     }
   }
@@ -92,6 +94,10 @@ export default {
   .summaryContentDiv {
     flex: 1 1 auto;
     overflow: auto;
+  }
+
+  fieldset{
+    padding 0
   }
 }
 </style>

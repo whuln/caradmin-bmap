@@ -34,10 +34,10 @@
           <span class="icon-button iconfont icon-ditu"></span>
           <div>我的调度</div>
         </div>
-        <div @click="handleAllCaruse" class="grid-cell" v-if="accesses.includes(8)">
+        <!-- <div @click="handleAllCaruse" class="grid-cell" v-if="accesses.includes(8)">
           <img class="img-button" src="../assets/images/menu/allcarapply.png">
           <div>所有用车</div>
-        </div>
+        </div> -->
         <div @click="handleSummary" class="grid-cell" v-if="accesses.includes(9)">
           <img class="img-button" src="../assets/images/menu/approve.png">
           <div>汇总统计</div>
